@@ -37,13 +37,13 @@ fi
 
 CHECKROOT
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>> $LOGFILENAME
 VALIDATE $? "mysql installed"
 
-systemctl enable mysqld
+systemctl enable mysqld &>> $LOGFILENAME
 VALIDATE $? "mysql service enabled"
 
-systemctl start mysqld
+systemctl start mysqld &>> $LOGFILENAME
 VALIDATE $? "mysql start started"
 
 # mysql_secure_installation --set-root-pass ExpenseApp@1
@@ -51,11 +51,11 @@ VALIDATE $? "mysql start started"
 
 #mysql -h mysql.devopspractice.help -u root -pExpenseApp@1 
 
-mysql -h 172.31.13.67 -u root -pExpenseApp@1 -e 'show databases;'
+mysql -h 172.31.13.67 -u root -pExpenseApp@1 -e 'show databases;' &>> $LOGFILENAME
 
 if [ $? -ne 0 ]
 then
-    mysql_secure_installation --set-root-pass ExpenseApp@1
+    mysql_secure_installation --set-root-pass ExpenseApp@1 &>> $LOGFILENAME
     VALIDATE $? "password set"
 else
     echo -e "MySQL Root password already setup ... $Y SKIPPING $N"
