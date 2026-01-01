@@ -80,10 +80,10 @@ systemctl start backend
 
 systemctl enable backend
 
-dnf install mysql -y
+dnf install mysql -y &>>$LOGFILENAME
 VALIDATE $? "installing mysql"
 
-mysql -h mysql.devopspractice.help -uroot -pExpenseApp@1 < /app/schema/backend.sql
+mysql -h mysql.devopspractice.help -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOGFILENAME
 
 systemctl restart backend
 
