@@ -37,18 +37,45 @@ fi
 
 CHECKROOT
 
-dnf install mysql-server -y
-VALIDATE $? "mysql installed"
+dnf module disable nodejs -y &>>$LOGFILENAME
+VALIDATE $? "disable nodejs"
 
-systemctl enable mysqld
-VALIDATE $? "mysql service enabled"
+dnf module enable nodejs:20 -y &>>$LOGFILENAME
+VALIDATE $? "enable nodejs:20"
 
-systemctl start mysqld
-VALIDATE $? "mysql start started"
+dnf install nodejs -y &>>$LOGFILENAME
+VALIDATE $? "install nodejs"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1
-VALIDATE $? "password set"
+useradd expense &>>$LOGFILENAME
+VALIDATE $? "useradd expense"
 
-#mysql -h mysql.devopspractice.help -u root -pExpenseApp@1 
+mkdir /app &>>$LOGFILENAME
+VALIDATE $? "Creating app directory"
 
-mysql -h 172-31-1-230 -u root -pExpenseApp@1
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOGFILENAME
+VALIDATE $? "Downloaded backend.zip"
+
+cd /app &>>$LOGFILENAME
+VALIDATE $? "Changing directory to /app"
+
+unzip /tmp/backend.zip &>>$LOGFILENAME
+VALIDATE $? "Unzipping builds"
+
+npm install &>>$LOGFILENAME
+VALIDATE $? "Installing dependencies"
+
+cp /home/ec2-user/expense-shell-practice/backend.service /etc/systemd/system/backend.service &>>$LOGFILENAME
+VALIDATE $? "Copy backend.service"
+
+systemctl daemon-reload 
+
+systemctl start backend
+
+systemctl enable backend
+
+systemctl status backend &>>$LOGFILENAME
+VALIDATE $? "backend started"
+
+
+
+
