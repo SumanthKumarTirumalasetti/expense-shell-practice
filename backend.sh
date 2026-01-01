@@ -49,4 +49,6 @@ VALIDATE $? "mysql start started"
 mysql_secure_installation --set-root-pass ExpenseApp@1
 VALIDATE $? "password set"
 
-mysql -h mysql.devopspractice.help -u root -pExpenseApp@1
+#mysql -h mysql.devopspractice.help -u root -pExpenseApp@1 
+
+mysql -h 172-31-1-230 -u root -pExpenseApp@1
