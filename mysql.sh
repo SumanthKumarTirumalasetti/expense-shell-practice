@@ -51,7 +51,7 @@ VALIDATE $? "mysql start started"
 
 #mysql -h mysql.devopspractice.help -u root -pExpenseApp@1 
 
-mysql -h 172.31.13.67 -u root -pExpenseApp@1 -e 'show databases;' &>> $LOGFILENAME
+mysql -h mysql.devopspractice.help -u root -pExpenseApp@1 -e 'show databases;' &>> $LOGFILENAME
 
 if [ $? -ne 0 ]
 then
