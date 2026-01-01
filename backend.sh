@@ -37,7 +37,7 @@ fi
 
 CHECKROOT
 
-dnf install mysql-server -Y
+dnf install mysql-server -y
 VALIDATE $? "mysql installed"
 
 systemctl enable mysqld
